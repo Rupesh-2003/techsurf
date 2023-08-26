@@ -2,7 +2,7 @@ import Navlinks from "./navlinks"
 
 const Navbar = () => {
     return (
-        <div className="w-[20%] border-r-[1px] border-gray h-[100vh] flex flex-col px-[21px] py-[20px] box-border font-Inter">
+        <div className="min-w-[20%] border-r-[1px] border-gray h-[100vh] flex flex-col px-[21px] py-[20px] box-border font-Inter">
             {/* App name and logo */}
             <div className="flex flex-col gap-y-[8px] justify-center px-[16px] box-border">
                 <div className="flex flex-row gap-x-[10px] text-[22px] font-medium font-Lexend">
