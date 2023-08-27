@@ -61,7 +61,7 @@ const AutoTagging = (props) => {
             >
 
                 {tags.map((tag, index) => (
-                    <div className='flex flex-row rounded-[5px] bg-purple-light px-[10px] py-[7px] font-medium box-border'>
+                    <div key={tag} className='flex flex-row rounded-[5px] bg-purple-light px-[10px] py-[7px] font-medium box-border'>
                         {tag}
                         <img src='/icons/cross.svg' className='ml-[22px] cursor-pointer' onClick={() => onCrossClickHandler(index)}/>
                     </div>

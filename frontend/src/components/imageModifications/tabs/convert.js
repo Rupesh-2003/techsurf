@@ -42,7 +42,8 @@ const Convert = (props) => {
         fetch("http://localhost:5000/convertImage", requestOptions)
         .then(response => response.blob())
         .then(blob => {
-            const convertedImage = new File([blob], image.name, { type: blob.type });
+            const newImageName = image.name.split('.')[0] + '.' + convertTo
+            const convertedImage = new File([blob], newImageName, { type: blob.type });
             
             const updatedFileList = props.images.map((file, i) => {
                 if (i === props.index) {
@@ -84,7 +85,7 @@ const Convert = (props) => {
                     <div className='flex flex-row gap-x-[20px]'>
                         {convertOptions.map((option) => {
                             return (
-                                <img src={`/icons/${option}${convertTo == option ? 'Filled': ''}.svg`} onClick={() => setConvertTo(option)} className='cursor-pointer'/>
+                                <img key={option} src={`/icons/${option}${convertTo == option ? 'Filled': ''}.svg`} onClick={() => setConvertTo(option)} className='cursor-pointer'/>
                             )
                         })}
                     </div>

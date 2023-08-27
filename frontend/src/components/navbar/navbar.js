@@ -20,13 +20,13 @@ const Navbar = () => {
                 <Navlinks link="MyFiles" logo="myFiles.svg" text="My Files"/>
                 <Navlinks link="Recent" logo="recent.svg" text="Recent"/>
                 <Navlinks link="Search" logo="search.svg" text="Search media"/>
-                <Navlinks link="Developer" logo="developer.svg" text="Developer"/>
+                {/* <Navlinks link="Developer" logo="developer.svg" text="Developer"/> */}
             </div>
 
             <div className="w-full h-[1px] bg-gray my-[30px]"></div>
             <div className="flex flex-col gap-y-[12px] text-[14px]">
                 <Navlinks link="settings" logo="settings.svg" text="Settings"/>
-                <Navlinks link="Logout" logo="logout.svg" text="Logout"/>
+                {/* <Navlinks link="Logout" logo="logout.svg" text="Logout"/> */}
             </div>
         </div>
     )
