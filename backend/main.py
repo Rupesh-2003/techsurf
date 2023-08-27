@@ -288,20 +288,12 @@ def search_image():
     }
 
     output = requests.post(SENTENCE_SIMILARITY, headers=HEADERS, json=payload)
-    # create a dictionary of image_id and similarity score
 
     similarity_scores = output.json()
     image_ids = [image["file_id"] for image in response]
     similarity_scores = dict(zip(image_ids, similarity_scores))
 
-    # sort the dictionary in descending order of similarity score
     similarity_scores = {k: v for k, v in sorted(similarity_scores.items(), key=lambda item: item[1], reverse=True)}
-
-    # print(similarity_scores)
-
-    
-    # return image ids with similarity score above 0.4
-    # image_ids = [image_id for image_id, score in similarity_scores.items() if score > 0.3]
     image_ids = [image_id for image_id, score in similarity_scores.items() if float(score) > 0.3]
 
     images = list(collection.find({"file_id": {"$in": image_ids}}, {"_id": 0}))
