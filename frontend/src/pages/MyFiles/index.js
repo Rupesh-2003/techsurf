@@ -63,7 +63,7 @@ const MyFiles = () => {
 
     return (
         <div className="flex flex-col h-screen relative font-Inter">
-            <div className="flex flex-row h-[100px] p-[20px] items-start">
+            <div className="flex flex-row min-h-[100px] p-[20px] items-start">
                 My files &gt; marketing department
 
                 <button className='flex flex-row gap-x-[10px] items-center outline-none text-purple-dark border-[1px] border-purple-dark font-semibold px-[22px] py-[10px] rounded-[5px] text-[14px] box-border ml-auto'>

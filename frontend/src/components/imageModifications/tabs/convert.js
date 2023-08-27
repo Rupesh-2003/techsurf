@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react'
 
 const Convert = (props) => {
     const [open, setOpen] = useState(props.open)
-    const [convertTo, setConvertTo] = useState('png')
+    const [convertTo, setConvertTo] = useState(null)
     const [image, setImage] = useState(props.image.file)
     const [convertOptions, setConvertOptions] = useState([])
 
     useEffect(() => {
         setOpen(props.open)
         setImage(props.image.file)
-        const options = ['png', 'jpeg', 'webp', 'jpg']
-        const index = options.indexOf(image.type.split('/')[1])
+        const options = ['png', 'jpeg', 'webp']
+        const index = options.indexOf(props.image.file.type.split('/')[1])
         options.splice(index, 1)
         setConvertOptions(options)
     }, [props])
@@ -23,6 +23,40 @@ const Convert = (props) => {
         else {
             props.setTabOpened("convert")
         }
+    }
+
+    const onConvertClickHandler = () => {
+        if (convertTo == null) {
+            return
+        }
+        var formdata = new FormData();
+        formdata.append("image", image, image.name);
+        formdata.append("output_format", convertTo)
+
+        var requestOptions = {
+        method: 'POST',
+        body: formdata,
+        redirect: 'follow'
+        };
+
+        fetch("http://localhost:5000/convertImage", requestOptions)
+        .then(response => response.blob())
+        .then(blob => {
+            const convertedImage = new File([blob], image.name, { type: blob.type });
+            
+            const updatedFileList = props.images.map((file, i) => {
+                if (i === props.index) {
+                    return {
+                        file: convertedImage,
+                        tags: file.tags,
+                        caption: file.caption
+                    };
+                }
+                return file;
+            });
+            props.setSelectedImages(updatedFileList);
+        })
+        .catch(error => console.log('error', error));
     }
 
     return (
@@ -56,7 +90,11 @@ const Convert = (props) => {
                     </div>
                 </div>
 
-                <button className='flex flex-row gap-x-[15px] items-center border-none outline-none bg-purple-dark text-white font-medium px-[20px] py-[10px] rounded-[5px] mt-[20px]'>
+                <button
+                    className={`flex flex-row gap-x-[15px] items-center border-none outline-none bg-purple-dark text-white font-medium px-[20px] py-[10px] rounded-[5px] mt-[20px] ${convertTo === null ? 'opacity-60 cursor-not-allowed' : ''}`}
+                    onClick={onConvertClickHandler}
+                    disabled={convertTo === null}
+                >
                     Convert
                     <img src='/icons/whiteArrow.svg'/>
                 </button>

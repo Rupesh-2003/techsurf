@@ -56,14 +56,18 @@ const ImageModifications = (props) => {
                         setTabOpened={setTabOpened}
                         open={tabOpened === 'optimise'}
                         image={props.image}
+                        images={props.images}
                         index={props.index}
+                        setSelectedImages={props.setSelectedImages}
                     />
 
                     <Convert
                         setTabOpened={setTabOpened}
                         open={tabOpened === 'convert'}
                         image={props.image}
+                        images={props.images}
                         index={props.index}
+                        setSelectedImages={props.setSelectedImages}
                     />
                 </div>
             </div>

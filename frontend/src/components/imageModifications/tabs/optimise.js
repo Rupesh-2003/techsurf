@@ -21,6 +21,38 @@ const Optimise = (props) => {
         }
     }
 
+    const onCompressClickHandler = () => {
+        var formdata = new FormData();
+        formdata.append("image", image, image.name);
+        formdata.append("quality", (100 - optimisePercentage))
+
+        var requestOptions = {
+        method: 'POST',
+        body: formdata,
+        redirect: 'follow'
+        };
+
+        fetch("http://localhost:5000/compressImage", requestOptions)
+        .then(response => response.blob())
+        .then(blob => {
+            const compressedImage = new File([blob], image.name, { type: blob.type });
+            // console.log("Compressed image:", compressedImage);
+
+            const updatedFileList = props.images.map((file, i) => {
+                if (i === props.index) {
+                    return {
+                        file: compressedImage,
+                        tags: file.tags,
+                        caption: file.caption
+                    };
+                }
+                return file;
+            });
+            props.setSelectedImages(updatedFileList);
+        })
+        .catch(error => console.log('error', error));
+    }
+
     return (
         <>
             <div
@@ -55,7 +87,9 @@ const Optimise = (props) => {
                     <div className='ml-auto'>{Math.round((image.size - image.size*optimisePercentage/100)/1024)} KB</div>
                 </div>
                 
-                <button className='flex flex-row gap-x-[15px] items-center border-none outline-none bg-purple-dark text-white font-medium px-[20px] py-[10px] rounded-[5px]'>
+                <button className='flex flex-row gap-x-[15px] items-center border-none outline-none bg-purple-dark text-white font-medium px-[20px] py-[10px] rounded-[5px]'
+                    onClick={onCompressClickHandler}
+                >
                     Compress File
                     <img src='/icons/whiteArrow.svg'/>
                 </button>
