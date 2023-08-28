@@ -94,6 +94,8 @@ const MyFiles = () => {
         fetchFiles()
     }, [])
 
+    console.log(selectedImages)
+
     return (
         <div className="flex flex-col h-screen relative font-Inter">
             <div className="flex flex-row min-h-[100px] h-[100px] p-[20px] items-start border-b-[1px] border-gray text-purple-dark">
