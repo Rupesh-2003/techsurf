@@ -75,6 +75,9 @@ https://github.com/Rupesh-2003/techsurf/assets/72150555/bcbe974a-9da3-4836-b318-
 
 <img width="1440" alt="Screenshot 2023-08-28 at 5 43 55 AM" src="https://github.com/Rupesh-2003/techsurf/assets/72150555/41d6b7e3-129c-4aa2-9b75-51c2a0ce7fce">
 
+<img width="1440" alt="Screenshot 2023-08-28 at 5 48 34 AM" src="https://github.com/Rupesh-2003/techsurf/assets/72150555/5600597b-f8cb-46e5-a52d-cb709c2cb2c3">
+
+<img width="1440" alt="Screenshot 2023-08-28 at 5 49 06 AM" src="https://github.com/Rupesh-2003/techsurf/assets/72150555/91846623-7a1f-4f8e-8af0-9159b14f4e0c">
 
 
 ## <span>👔<span/>&nbsp;&nbsp;  Candidate Details
