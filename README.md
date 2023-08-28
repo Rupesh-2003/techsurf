@@ -4,7 +4,14 @@
 
 Developed a Full Stack Application on DAM which allows users to auto tag the images, compress, convert and edit through a single portal. All the assets are pushed on the linked google drive and its meta data is stored in MongoDB. Users can perform a semantic search on the images resulting in accurate search results.
 
-<br/>
+
+# Video
+
+
+
+https://github.com/Rupesh-2003/techsurf/assets/72150555/bcbe974a-9da3-4836-b318-fec90518d453
+
+
 
 ## <span>🛠️<span/>&nbsp;&nbsp; Tech Stack
 
@@ -19,8 +26,6 @@ Developed a Full Stack Application on DAM which allows users to auto tag the ima
   - facebook/detr-resnet-101
   - nlpconnect/vit-gpt2-image-captioning
   - sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
-  
-
 </p>
 
 <br/>
@@ -56,6 +61,20 @@ Developed a Full Stack Application on DAM which allows users to auto tag the ima
 1. cd backend
 2. pip install -r requirements.txt (pip/pip3) depending on your system
 3. python3 main.py
+
+
+# ScreenShots
+
+<img width="1440" alt="Screenshot 2023-08-28 at 5 42 03 AM" src="https://github.com/Rupesh-2003/techsurf/assets/72150555/247d1289-e8a4-4214-baff-d1451645e4fa">
+
+<img width="1440" alt="Screenshot 2023-08-28 at 5 42 34 AM" src="https://github.com/Rupesh-2003/techsurf/assets/72150555/953245dc-86e4-4a11-8689-54a5baeb8904">
+
+<img width="1440" alt="Screenshot 2023-08-28 at 5 42 40 AM" src="https://github.com/Rupesh-2003/techsurf/assets/72150555/fa1c3406-770b-49f6-90e6-8191933e2617">
+
+<img width="1440" alt="Screenshot 2023-08-28 at 5 43 36 AM" src="https://github.com/Rupesh-2003/techsurf/assets/72150555/c00eadf2-ad79-4459-8cd7-40d4fdd7b7eb">
+
+<img width="1440" alt="Screenshot 2023-08-28 at 5 43 55 AM" src="https://github.com/Rupesh-2003/techsurf/assets/72150555/41d6b7e3-129c-4aa2-9b75-51c2a0ce7fce">
+
 
 
 ## <span>👔<span/>&nbsp;&nbsp;  Candidate Details
