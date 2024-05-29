@@ -7,12 +7,12 @@ const Navbar = () => {
             <div className="flex flex-col gap-y-[8px] justify-center px-[16px] box-border">
                 <div className="flex flex-row gap-x-[10px] text-[22px] font-medium font-Lexend">
                     <img src="/logo.svg" alt="logo"/>
-                    assetMangaer.AI
+                    assetManager.AI
                 </div>
-                <div className="flex flex-row gap-x-[5px] text-[#57534E] text-[10px] justify-end">
+                {/* <div className="flex flex-row gap-x-[5px] text-[#57534E] text-[10px] justify-end">
                     <div>built for</div>
                     <img src="/contentStackLogo.png" alt="content stack logo" className="w-[95px] h-[16px]"/>
-                </div>
+                </div> */}
             </div>
 
             {/* main pages nav links */}

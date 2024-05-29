@@ -20,22 +20,28 @@ const MyFilesDetails = ({folders, files}) => {
                 ))}
             </div>
 
-            <div className="flex flex-col flex-grow w-full overflow-scroll gap-y-[20px]">
+            <div className="flex flex-col flex-grow w-full gap-y-[20px]">
                 <div className="font-medium">Files</div>
-                <div className="flex flex-row flex-wrap gap-x-[25px] overflow-scroll gap-y-[25px] cursor-pointer">
+                <div className="flex flex-row flex-wrap gap-x-[25px]  gap-y-[25px] cursor-pointer">
                 {files?.length == 0 &&
                     <div className='flex flex-col items-center justify-center m-auto text-[14px] text-[#606060]'>
                         No Files Present, try uploading
                     </div>
                 }
                 {files?.map((file, index) => (
-                    <div className="flex flex-col gap-y-[10px] p-[8px] bg-[#F3F6FB] w-[300px] h-[250px] box-border pt-[15px] rounded-[5px] text-[14px]">
+                    <div className="flex flex-col gap-y-[10px] p-[8px] bg-[#F3F6FB] w-[300px] h-[250px] box-border pt-[15px] rounded-[5px] text-[14px]" key={index}>
                         <div className="flex flex-row gap-[15px] items-center ">
                             <img src="/icons/image.svg" alt="image" className="w-[15px] h-[15px] ml-[10px]"/>
                             {file.name}
                         </div>
                         <a href={file.link} target="_blank" rel="noopener noreferrer" className="w-full h-full object-cover">
-                            <img src={file.link} className="w-full h-full object-cover" alt="file" />
+                            <img src={`https://lh3.googleusercontent.com/d/${file.imageId}`} className="w-full h-full object-cover" alt="file" />
+                            
+                            {/* alternate option */}
+                            {/* <iframe 
+                            src={`https://drive.google.com/file/d/${file.imageId}/preview`} 
+                            className="w-full h-full object-cover" alt="file"
+                            ></iframe> */}
                         </a>
                     </div>
                 ))}

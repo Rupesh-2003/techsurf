@@ -22,7 +22,7 @@ const Search = () => {
         redirect: 'follow'
         };
 
-        fetch("http://localhost:5000/searchImage", requestOptions)
+        fetch("http://localhost:5001/searchImage", requestOptions)
         .then(response => response.json())
         .then(result => {
             setImages(result);
@@ -73,7 +73,7 @@ const Search = () => {
                                     {image.name}
                                 </div>
                                 <a href={`https://drive.google.com/uc?id=${image.file_id}`} target="_blank" rel="noopener noreferrer" className="w-full h-full object-cover">
-                                    <img src={`https://drive.google.com/uc?id=${image.file_id}`} className="w-full h-full object-cover" alt="file" />
+                                    <img src={`https://lh3.googleusercontent.com/d/${image.file_id}`} className="w-full h-full object-cover" alt="file" />
                                 </a>
                             </div>
                         ))}

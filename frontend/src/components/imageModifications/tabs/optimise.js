@@ -1,11 +1,13 @@
 import { Slider } from '@material-tailwind/react'
 import React, { useEffect, useState } from 'react'
+import { ScaleLoader } from 'react-spinners'
 
 
 const Optimise = (props) => {
     const [open, setOpen] = useState(props.open)
     const [optimisePercentage, setOptimisePercentage] = useState(50)
     const [image, setImage] = useState(props.image.file)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         setOpen(props.open)
@@ -22,9 +24,15 @@ const Optimise = (props) => {
     }
 
     const onCompressClickHandler = () => {
+        if (optimisePercentage == 0) {
+            return
+        }
+
+        setLoading(true)
         var formdata = new FormData();
         formdata.append("image", image, image.name);
         formdata.append("quality", (100 - optimisePercentage))
+        formdata.append("desired_size", Math.round((image.size - image.size*optimisePercentage/100)/1024))
 
         var requestOptions = {
         method: 'POST',
@@ -32,7 +40,7 @@ const Optimise = (props) => {
         redirect: 'follow'
         };
 
-        fetch("http://localhost:5000/compressImage", requestOptions)
+        fetch("http://localhost:5001/compressImage", requestOptions)
         .then(response => response.blob())
         .then(blob => {
             const compressedImage = new File([blob], image.name, { type: blob.type });
@@ -49,6 +57,7 @@ const Optimise = (props) => {
                 return file;
             });
             props.setSelectedImages(updatedFileList);
+            setLoading(false);
         })
         .catch(error => console.log('error', error));
     }
@@ -75,7 +84,7 @@ const Optimise = (props) => {
                 </div>
 
                 <div className="w-96">
-                    <Slider value={optimisePercentage} onChange={(e) => {setOptimisePercentage(Math.round(e.target.value))}} size="md" color='deep-purple' defaultValue={50} />
+                    <Slider value={optimisePercentage} onChange={(e) => {setOptimisePercentage(Math.round(e.target.value))}} size="md" color='deep-purple' />
                 </div>
 
                 {/* dotted line with dash gap of 5 px */} 
@@ -86,14 +95,20 @@ const Optimise = (props) => {
                     <div className=''>Estimated Reduced Size</div>
                     <div className='ml-auto'>{Math.round((image.size - image.size*optimisePercentage/100)/1024)} KB</div>
                 </div>
+
+                {loading ? 
+                    <div className='flex justify-center items-center w-[120px] h-[41px]'>
+                        <ScaleLoader color='#7C3AED' radius={2} margin={2} />
+                    </div>
+                :
                 
-                <button className='flex flex-row gap-x-[15px] items-center border-none outline-none bg-purple-dark text-white font-medium px-[20px] py-[10px] rounded-[5px]'
-                    onClick={onCompressClickHandler}
-                >
-                    Compress File
-                    <img src='/icons/whiteArrow.svg'/>
-                </button>
-                
+                    <button className='flex flex-row gap-x-[15px] items-center border-none outline-none bg-purple-dark text-white font-medium px-[20px] py-[10px] rounded-[5px]'
+                        onClick={onCompressClickHandler}
+                    >
+                        Compress File
+                        <img src='/icons/whiteArrow.svg'/>
+                    </button>
+                }               
             </div>
         </>
     )

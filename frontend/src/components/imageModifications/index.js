@@ -37,7 +37,7 @@ const ImageModifications = (props) => {
         redirect: 'follow'
         };
 
-        fetch("http://localhost:5000/saveImageToGoogleDrive", requestOptions)
+        fetch("http://localhost:5001/saveImageToGoogleDrive", requestOptions)
         .then(response => {
             setSaving(false);
             // remove this image from the list of images
@@ -168,17 +168,17 @@ const ImageModifications = (props) => {
                         {/* col 1 */}
                         <div className='flex flex-row'>
                             <div className='w-[70px] font-medium'>Name: </div>
-                            <div>{image?.file.name.split('.')[0]}</div>
+                            <div>{image.file.name.split('.')[0]}</div>
                         </div>
 
                         <div className='flex flex-row'>
                             <div className='w-[70px] font-medium'>Size: </div>
-                            <div>{(image?.file.size / 1024).toFixed(2)} KB</div>
+                            <div>{(image.file.size / 1024).toFixed(2)} KB</div>
                         </div>
 
                         <div className='flex flex-row'>
                             <div className='w-[70px] font-medium'>Format: </div>
-                            <div>{image?.file.type.split('/').pop()}</div>
+                            <div>{image.file.type.split('/').pop()}</div>
                         </div>
                     </div>
                     
@@ -186,7 +186,7 @@ const ImageModifications = (props) => {
                     <div className='flex flex-col w-[50%]'>
                         <div className='flex flex-row'>
                             <div className='min-w-[100px] font-medium'>Last Modified: </div>
-                            <div className='pl-[5px]'>{formatDate(image?.file.lastModifiedDate)}</div>
+                            <div className='pl-[5px]'>{formatDate(image.file.lastModifiedDate)}</div>
                         </div>
                     </div>
                 </div>

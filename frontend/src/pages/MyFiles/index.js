@@ -30,7 +30,7 @@ const MyFiles = () => {
             redirect: 'follow'
         };
     
-        fetch("http://localhost:5000/getImageTags", requestOptions)
+        fetch("http://localhost:5001/getImageTags", requestOptions)
         .then(response => response.json())
         .then(result => {
             const updatedFileList = imageFiles.map(file => {
@@ -80,10 +80,9 @@ const MyFiles = () => {
             redirect: 'follow'
         };
           
-        fetch("http://localhost:5000/listPublicImageLinksAndFolders", requestOptions)
+        fetch("http://localhost:5001/listPublicImageLinksAndFolders", requestOptions)
         .then(response => response.json())
         .then(result => {
-            console.log(result)
             setFiles(result)
             setFilesLoading(false)
         })
@@ -91,10 +90,9 @@ const MyFiles = () => {
     }
 
     useEffect(() => {
+        console.log("i am fired")
         fetchFiles()
     }, [])
-
-    console.log(selectedImages)
 
     return (
         <div className="flex flex-col h-screen relative font-Inter">
@@ -156,6 +154,7 @@ const MyFiles = () => {
                     setSelectedImages={setSelectedImages}
                     onCancelClickHandler={onCancelClickHandler}
                     fetchFiles={fetchFiles}
+                    // fetchFiles={selectedImages.length == 0 ? fetchFiles : undefined}
                 />
             }
             {selectedImages.length == 0 && !filesLoading && !loading &&

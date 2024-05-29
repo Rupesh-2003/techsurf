@@ -1,6 +1,4 @@
-# TechSurf Submission
-
-## Problem Statement: &nbsp;&nbsp; Digital Asset Management
+#  Digital Asset Management
 
 Developed a Full Stack Application on DAM which allows users to auto tag the images, compress, convert and edit through a single portal. All the assets are pushed on the linked google drive and its meta data is stored in MongoDB. Users can perform a semantic search on the images resulting in accurate search results.
 

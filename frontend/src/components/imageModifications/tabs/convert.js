@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { ScaleLoader } from 'react-spinners'
 
 
 const Convert = (props) => {
@@ -6,6 +7,7 @@ const Convert = (props) => {
     const [convertTo, setConvertTo] = useState(null)
     const [image, setImage] = useState(props.image.file)
     const [convertOptions, setConvertOptions] = useState([])
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         setOpen(props.open)
@@ -29,6 +31,7 @@ const Convert = (props) => {
         if (convertTo == null) {
             return
         }
+        setLoading(true)
         var formdata = new FormData();
         formdata.append("image", image, image.name);
         formdata.append("output_format", convertTo)
@@ -39,7 +42,7 @@ const Convert = (props) => {
         redirect: 'follow'
         };
 
-        fetch("http://localhost:5000/convertImage", requestOptions)
+        fetch("http://localhost:5001/convertImage", requestOptions)
         .then(response => response.blob())
         .then(blob => {
             const newImageName = image.name.split('.')[0] + '.' + convertTo
@@ -56,6 +59,7 @@ const Convert = (props) => {
                 return file;
             });
             props.setSelectedImages(updatedFileList);
+            setLoading(false)
         })
         .catch(error => console.log('error', error));
     }
@@ -91,14 +95,20 @@ const Convert = (props) => {
                     </div>
                 </div>
 
-                <button
-                    className={`flex flex-row gap-x-[15px] items-center border-none outline-none bg-purple-dark text-white font-medium px-[20px] py-[10px] rounded-[5px] mt-[20px] ${convertTo === null ? 'opacity-60 cursor-not-allowed' : ''}`}
-                    onClick={onConvertClickHandler}
-                    disabled={convertTo === null}
-                >
-                    Convert
-                    <img src='/icons/whiteArrow.svg'/>
-                </button>
+                {loading ? 
+                    <div className='flex justify-center items-center w-[120px] h-[41px]'>
+                        <ScaleLoader color='#7C3AED' radius={2} margin={2} />
+                    </div>
+                :
+                    <button
+                        className={`flex flex-row gap-x-[15px] items-center border-none outline-none bg-purple-dark text-white font-medium px-[20px] py-[10px] rounded-[5px] mt-[20px] ${convertTo === null ? 'opacity-60 cursor-not-allowed' : ''}`}
+                        onClick={onConvertClickHandler}
+                        disabled={convertTo === null}
+                    >
+                        Convert
+                        <img src='/icons/whiteArrow.svg'/>
+                    </button>
+                }
 
             </div>
         </>

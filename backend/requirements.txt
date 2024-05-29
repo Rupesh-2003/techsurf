@@ -6,3 +6,4 @@ google-auth-httplib2==0.1.0
 Pillow==9.5.0
 pymongo==4.4.0
 pytz==2023.3
+google-auth-oauthlib==1.0.0

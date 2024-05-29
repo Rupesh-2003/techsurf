@@ -21,7 +21,10 @@ const EditPhoto = (props) => {
     }
 
     const applyEdits = () => {
-        props.applyEdits(brightness, saturation)
+        if(brightness > 50)
+            props.applyEdits(brightness*2, saturation*2)
+        else
+            props.applyEdits(brightness, saturation)
     }
 
     return (
@@ -53,7 +56,7 @@ const EditPhoto = (props) => {
                 </div>
 
                 <div className="w-96">
-                    <Slider value={brightness} onChange={(e) => {setBrightness(Math.round(e.target.value))}} size="md" color='deep-purple' defaultValue={50} />
+                    <Slider value={brightness} onChange={(e) => {setBrightness(Math.round(e.target.value))}} size="md" color='deep-purple' />
                 </div>
 
                 <div className="flex flex-row w-full">
@@ -62,7 +65,7 @@ const EditPhoto = (props) => {
                 </div>
 
                 <div className="w-96">
-                    <Slider value={saturation} onChange={(e) => {setSaturation(Math.round(e.target.value))}} size="md" color='deep-purple' defaultValue={50} />
+                    <Slider value={saturation} onChange={(e) => {setSaturation(Math.round(e.target.value))}} size="md" color='deep-purple' />
                 </div>
 
                 {/* dotted line with dash gap of 5 px */} 

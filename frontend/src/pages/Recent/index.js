@@ -12,7 +12,7 @@ const Recent = () => {
             redirect: 'follow'
           };
           
-          fetch("http://localhost:5000/recentImages", requestOptions)
+          fetch("http://localhost:5001/recentImages", requestOptions)
             .then(response => response.json())
             .then(response => {
                 setLoading(false);
@@ -44,9 +44,11 @@ const Recent = () => {
                                 <div className="flex flex-row gap-[15px] items-center ">
                                     <img src="/icons/image.svg" alt="image" className="w-[15px] h-[15px] ml-[10px]"/>
                                     {image.name}
+                                    {console.log(image)}
+
                                 </div>
                                 <a href={`https://drive.google.com/uc?id=${image.file_id}`} target="_blank" rel="noopener noreferrer" className="w-full h-full object-cover">
-                                    <img src={`https://drive.google.com/uc?id=${image.file_id}`} className="w-full h-full object-cover" alt="file" />
+                                    <img src={`https://lh3.googleusercontent.com/d/${image.file_id}`} className="w-full h-full object-cover" alt="file" />
                                 </a>
                             </div>
                         ))}

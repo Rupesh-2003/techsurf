@@ -10,19 +10,23 @@ from google.auth.transport.requests import Request
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload, MediaIoBaseUpload
 from google.oauth2.credentials import Credentials
 import os
+from dotenv import load_dotenv
 from pymongo import MongoClient
 from datetime import datetime
 import pytz
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 DETR_API_URL = "https://api-inference.huggingface.co/models/facebook/detr-resnet-101"
 GPT2_IMAGE_CAPTIONING_API_URL = "https://api-inference.huggingface.co/models/nlpconnect/vit-gpt2-image-captioning"
-SENTENCE_SIMILARITY = "https://api-inference.huggingface.co/models/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-HEADERS = {"Authorization": "Bearer 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"}
+# SENTENCE_SIMILARITY = "https://api-inference.huggingface.co/models/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+SENTENCE_SIMILARITY = "https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2"
+HEADERS = {"Authorization": "Bearer " + os.getenv("HUGGINGFACE_API_KEY")}
 
-connection_string = "mongodb+srv://rupeshtechsurf:MIxioyhRAK1f41Fn@cluster0.bt8h7pc.mongodb.net/techsurf?retryWrites=true&w=majority"
+connection_string = os.getenv("FLASK_MONGODB_URI")
 client = MongoClient(connection_string)
 
 # Specify the database and collection
@@ -41,9 +45,16 @@ def get_image_tags():
     for image_file in image_files:
         data = image_file.read()
         gpt2_response = query_gpt2_image_captioning(data)
-        detr_response = query_detr_model(data)
         
-        unique_detr_labels = set(obj['label'] for obj in detr_response)
+        try:
+            detr_response = query_detr_model(data)
+            unique_detr_labels = set(obj['label'] for obj in detr_response)
+        except TypeError as e:
+            # Handle the TypeError here, you can log it or return an error response
+            error_message = f"Error processing image {image_file.filename}: {str(e)}"
+            print(error_message)
+            unique_detr_labels = []
+
         image_response = {
             "object_detection_labels": list(unique_detr_labels),
             "image_captioning_output": gpt2_response,
@@ -55,19 +66,27 @@ def get_image_tags():
     return {"error": False, "data": image_responses}, 200
 
 def query_detr_model(data):
-    response = requests.post(DETR_API_URL, headers=HEADERS, data=data)
+    response = requests.post(DETR_API_URL, headers=HEADERS, data=data, json={"parameters": {"wait_for_model": True}})
     return response.json()
 
 def query_gpt2_image_captioning(data):
-    response = requests.post(GPT2_IMAGE_CAPTIONING_API_URL, headers=HEADERS, data=data)
+    response = requests.post(GPT2_IMAGE_CAPTIONING_API_URL, headers=HEADERS, data=data, json={"parameters": {"wait_for_model": True}})
     return response.json()[0]['generated_text']
 
 
-def compress_image(img, quality, format):
+def compress_image(img, desired_size, format):
     try:
         img = img.convert("RGB")
         output_buffer = io.BytesIO()
-        img.save(output_buffer, format=format, quality=quality)
+        
+        width, height = img.size
+        scale_factor = desired_size / max(width, height)
+
+        new_width = int(width * scale_factor)
+        new_height = int(height * scale_factor)
+        img = img.resize((new_width, new_height))
+
+        img.save(output_buffer, format=format)
         output_buffer.seek(0)
         return output_buffer
 
@@ -78,17 +97,16 @@ def compress_image(img, quality, format):
 @app.route('/compressImage', methods=['POST'])
 def compress_image_route():
     try:
-        quality = int(request.form['quality']) - 15
+        quality = int(request.form['quality'])
         uploaded_file = request.files['image']
+        desired_size = int(request.form['desired_size'])
         if not uploaded_file:
             return "No image uploaded", 400
 
         image = Image.open(uploaded_file)
 
-        # Determine the format of the uploaded image
         image_format = uploaded_file.filename.split('.')[-1].lower()
-
-        compressed_image_buffer = compress_image(image, quality, image_format)
+        compressed_image_buffer = compress_image(image, desired_size=desired_size, format=image_format)
 
         if compressed_image_buffer:
             response = send_file(
@@ -283,7 +301,8 @@ def search_image():
     payload = {
         "inputs": {
             "source_sentence": query,
-            "sentences": [image["taggings"] for image in response]
+            "sentences": [image["taggings"] for image in response],
+            "parameters": {"wait_for_model": True}
         },
     }
 
@@ -294,7 +313,7 @@ def search_image():
     similarity_scores = dict(zip(image_ids, similarity_scores))
 
     similarity_scores = {k: v for k, v in sorted(similarity_scores.items(), key=lambda item: item[1], reverse=True)}
-    image_ids = [image_id for image_id, score in similarity_scores.items() if float(score) > 0.3]
+    image_ids = [image_id for image_id, score in similarity_scores.items() if float(score) > 0.2]
 
     images = list(collection.find({"file_id": {"$in": image_ids}}, {"_id": 0}))
 
@@ -331,5 +350,17 @@ def create_folder_api():
     return jsonify({"folder_id": folder_id}), 201
 
 
+@app.route('/ping', methods=['GET'])
+def ping():
+    list_public_image_links_and_folders()
+
+    with open('./testImage.jpeg', 'rb') as image_file:
+        response = query_detr_model(image_file)
+        unique_detr_labels = set(obj['label'] for obj in response)
+        print(unique_detr_labels)
+
+        return list(unique_detr_labels), 200
+    
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5001))
+    app.run(host='0.0.0.0', port=port, debug=True)
