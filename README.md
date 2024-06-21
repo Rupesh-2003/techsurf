@@ -7,7 +7,7 @@ Developed a Full Stack Application on DAM which allows users to auto tag the ima
 
 
 
-https://github.com/Rupesh-2003/techsurf/assets/72150555/bcbe974a-9da3-4836-b318-fec90518d453
+https://github.com/Rupesh-2003/techsurf/assets/72150555/9e613ede-8df2-48b0-94e8-402094b56eb4
 
 
 
