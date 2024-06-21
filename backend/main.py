@@ -74,19 +74,13 @@ def query_gpt2_image_captioning(data):
     return response.json()[0]['generated_text']
 
 
-def compress_image(img, desired_size, format):
+def compress_image(img, quality, format):
     try:
         img = img.convert("RGB")
         output_buffer = io.BytesIO()
         
-        width, height = img.size
-        scale_factor = desired_size / max(width, height)
-
-        new_width = int(width * scale_factor)
-        new_height = int(height * scale_factor)
-        img = img.resize((new_width, new_height))
-
-        img.save(output_buffer, format=format)
+        # Adjust the quality while saving the image
+        img.save(output_buffer, format=format, quality=quality)
         output_buffer.seek(0)
         return output_buffer
 
@@ -97,16 +91,15 @@ def compress_image(img, desired_size, format):
 @app.route('/compressImage', methods=['POST'])
 def compress_image_route():
     try:
-        quality = int(request.form['quality'])
+        new_quality = int(request.form['quality'])  # Reduction in percentage
         uploaded_file = request.files['image']
-        desired_size = int(request.form['desired_size'])
         if not uploaded_file:
             return "No image uploaded", 400
 
         image = Image.open(uploaded_file)
-
         image_format = uploaded_file.filename.split('.')[-1].lower()
-        compressed_image_buffer = compress_image(image, desired_size=desired_size, format=image_format)
+
+        compressed_image_buffer = compress_image(image, quality=new_quality, format=image_format)
 
         if compressed_image_buffer:
             response = send_file(
